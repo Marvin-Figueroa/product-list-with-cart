@@ -1,0 +1,51 @@
+// Define custom fonts
+@font-face {
+  font-family: "RedHatText";
+  src: url("../assets/fonts/static/RedHatText-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "RedHatText";
+  src: url("../assets/fonts/static/RedHatText-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "RedHatText";
+  src: url("../assets/fonts/static/RedHatText-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+// Override Bootstrap's variables to use custom fonts
+$font-family-sans-serif: "RedHatText", sans-serif !default;
+$font-family-base: $font-family-sans-serif !default;
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../node_modules/bootstrap/scss/functions";
+
+// 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+
+// Define map with my own color palette
+$custom-colors: (
+  "sunset-red": hsl(14, 86%, 42%),
+  "forest-green": hsl(159, 69%, 38%),
+  "rose-light-50": hsl(20, 50%, 98%),
+  "rose-light-100": hsl(13, 31%, 94%),
+  "rose-light-300": hsl(14, 25%, 72%),
+  "rose-light-400": hsl(7, 20%, 60%),
+  "rose-light-500": hsl(12, 20%, 44%),
+  "rose-light-900": hsl(14, 65%, 9%),
+);
+
+// Combine my color map with Bootstrap's color map
+
+$theme-colors: map-merge($custom-colors, $theme-colors);
+
+// Import bootstrap
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
