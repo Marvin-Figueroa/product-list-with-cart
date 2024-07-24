@@ -12,16 +12,24 @@
     <link rel="stylesheet" href="css/custom.min.css" />
     <title>Frontend Mentor | Product list with cart</title>
   </head>
-  <body>
-    <main>
-      <section>
-        <h1>Desserts</h1>
+  <body class="bg-rose-light-100 p-4 p-md-5">
+    <main class="row p-0 container-xxl mx-auto">
+      <section class="col-12 col-md-8">
+        <h1 class="fw-bold text-rose-light-900 mb-4">Desserts</h1>
         <ul id="product-list"></ul>
       </section>
-      <aside>
-        <h2>Your Cart (<span id="cart-items-count">0</span>)</h2>
-        <img src="assets/images/illustration-empty-cart.svg" alt="" />
-        <p>Your added items will appear here</p>
+      <aside class="col-12 col-md-4 bg-rose-light-50 rounded-4 p-4">
+        <h2 class="fw-bold text-sunset-red fs-4 m-0">
+          Your Cart (<span id="cart-items-count">0</span>)
+        </h2>
+        <img
+          class="d-block mx-auto my-5"
+          src="assets/images/illustration-empty-cart.svg"
+          alt=""
+        />
+        <p class="text-center fw-semibold text-rose-light-500 m-0">
+          Your added items will appear here
+        </p>
       </aside>
     </main>
     <script
