@@ -1,0 +1,20 @@
+:root {
+  --sunset-red: hsl(14, 86%, 42%);
+}
+
+.btn--product {
+  &:hover {
+    color: var(--sunset-red);
+    border: 1px solid var(--sunset-red) !important;
+  }
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
