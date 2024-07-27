@@ -53,3 +53,13 @@
     }
   }
 }
+
+.product-image {
+  box-sizing: border-box;
+  outline: 2px solid transparent;
+  transition: outline-color 0.3s ease;
+}
+
+.product-image-bordered {
+  outline-color: var(--sunset-red);
+}
