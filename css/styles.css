@@ -1,5 +1,7 @@
 :root {
   --sunset-red: hsl(14, 86%, 42%);
+  --rose-light-900: hsl(14, 65%, 9%);
+  --rose-light-400: hsl(7, 20%, 60%);
 }
 
 .btn--product {
@@ -17,4 +19,37 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: transparent;
+}
+
+.btn-icon--product {
+  border: 1px solid white;
+
+  svg path {
+    fill: white;
+  }
+
+  &:hover {
+    background-color: white;
+
+    svg path {
+      stroke: var(--sunset-red);
+    }
+  }
+}
+
+.btn-icon--cart {
+  border: 1px solid var(--rose-light-400);
+
+  svg path {
+    fill: var(--rose-light-400);
+  }
+
+  &:hover {
+    border: 1px solid var(--rose-light-900);
+
+    svg path {
+      fill: var(--rose-light-900);
+    }
+  }
 }
