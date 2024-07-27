@@ -111,55 +111,46 @@ const products = [
 
 let productsCart = [];
 
+//
 document.addEventListener("DOMContentLoaded", () => {
   renderProductList();
   addEventListenersToAddToCartButtons();
   renderCartContent();
 });
 
+// Mapa para almacenar las referencias de los botones y contenedores
+const buttonReferences = new Map();
+
 function renderCartContent() {
   const cartContent = document.getElementById("cart-content");
 
-  if (productsCart.length === 0)
-    cartContent.innerHTML = `<img
-          class="d-block mx-auto my-5"
-          src="assets/images/illustration-empty-cart.svg"
-          alt=""
-        />
-        <p class="text-center fw-semibold text-rose-light-500 m-0">
-          Your added items will appear here
-        </p> `;
-  else {
-    cartContent.innerHTML = `<ul id="cart-list" class="p-0 list-unstyled"></ul><div class="d-flex justify-content-between align-items-center my-3">
-          <p style="font-size: 0.9rem" class="m-0 fw-light text-rose-light-900">
-            Order Total
-          </p>
-          <span id="cart-order-total" class="fs-5 fw-bold text-rose-light-900"
-            >${formatCurrency(
-              productsCart.reduce(
-                (acc, curr) => acc + curr.quantity * curr.price,
-                0
-              )
-            )}</span
-          >
-        </div>
-        <div
-          class="bg-rose-light-100 d-flex justify-content-center align-items-center gap-2 p-3 rounded-3"
-        >
-          <img src="assets/images/icon-carbon-neutral.svg" alt="" />
-          <p style="font-size: 0.9rem" class="m-0 text-center">
-            This is a
-            <span class="fw-semibold">carbon-neutral</span> delivery
-          </p>
-        </div>
-        <button
-          data-bs-toggle="modal"
-          data-bs-target="#order-modal"
-          id="btn-confirm-order"
-          class="btn rounded-5 btn-sunset-red w-100 mt-4 text-rose-light-100 fs-6 fw-lighter py-3 text-nowrap"
-        >
-          Confirm Order
-        </button>`;
+  if (productsCart.length === 0) {
+    cartContent.innerHTML = `
+      <img class="d-block mx-auto my-5" src="assets/images/illustration-empty-cart.svg" alt="" />
+      <p class="text-center fw-semibold text-rose-light-500 m-0">Your added items will appear here</p>`;
+  } else {
+    cartContent.innerHTML = `
+      <ul id="cart-list" class="p-0 list-unstyled"></ul>
+      <div class="d-flex justify-content-between align-items-center my-3">
+        <p style="font-size: 0.9rem" class="m-0 fw-light text-rose-light-900">Order Total</p>
+        <span id="cart-order-total" class="fs-5 fw-bold text-rose-light-900">
+          ${formatCurrency(
+            productsCart.reduce(
+              (acc, curr) => acc + curr.quantity * curr.price,
+              0
+            )
+          )}
+        </span>
+      </div>
+      <div class="bg-rose-light-100 d-flex justify-content-center align-items-center gap-2 p-3 rounded-3">
+        <img src="assets/images/icon-carbon-neutral.svg" alt="" />
+        <p style="font-size: 0.9rem" class="m-0 text-center">
+          This is a <span class="fw-semibold">carbon-neutral</span> delivery
+        </p>
+      </div>
+      <button data-bs-toggle="modal" data-bs-target="#order-modal" id="btn-confirm-order" class="btn rounded-5 btn-sunset-red w-100 mt-4 text-rose-light-100 fs-6 fw-lighter py-3 text-nowrap">
+        Confirm Order
+      </button>`;
     renderCartItemsList();
   }
 }
@@ -169,7 +160,7 @@ function renderProductList() {
 
   const productListItems = products.map((product) => {
     return `
-      <li class="col-12 col-sm-6 col-lg-4" id=${product.id}>
+      <li class="col-12 col-sm-6 col-lg-4" id="product-${product.id}">
         <article>
           <picture>
             <source srcset="${
@@ -183,24 +174,20 @@ function renderProductList() {
     }" class="img-fluid d-block rounded-3" />
           </picture>
           <div class="d-flex flex-column gap-1">
-            <button
-              type="button"
-              class="btn-add-to-cart btn border border-rose-light-300 bg-rose-light-50 rounded-5 px-4 py-2 text-nowrap w-75 d-block mx-auto translate-middle-y fw-semibold btn--product"
-            >
+            <button type="button" class="btn-add-to-cart btn border border-rose-light-300 bg-rose-light-50 rounded-5 px-4 py-2 text-nowrap w-75 d-block mx-auto translate-middle-y fw-semibold btn--product">
               <img src="assets/images/icon-add-to-cart.svg" alt="" class="me-1" />
               Add to Cart
             </button>
             <span class="text-rose-light-400">${product.category}</span>
-            <p class="fw-semibold text-rose-light-900 mb-0 text-nowrap">
-              ${product.name}
-            </p>
-            <span class="fw-semibold text-sunset-red">
-              ${formatCurrency(product.price)}
-            </span>
+            <p class="fw-semibold text-rose-light-900 mb-0 text-nowrap">${
+              product.name
+            }</p>
+            <span class="fw-semibold text-sunset-red">${formatCurrency(
+              product.price
+            )}</span>
           </div>
         </article>
-      </li>
-    `;
+      </li>`;
   });
 
   productsList.innerHTML = productListItems.join("");
@@ -211,33 +198,47 @@ function renderCartItemsList() {
 
   const cartItems = productsCart.map((product) => {
     return `
-      <li
-            class="d-flex align-items-center justify-content-between border-bottom py-2"
-          >
-            <div class="d-flex flex-column gap-1">
-              <p class="fw-semibold m-0">${product.name}</p>
-              <div class="d-flex gap-2">
-                <span class="text-sunset-red fw-semibold">${
-                  product.quantity
-                }x</span>
-                <span class="fw-light text-rose-light-500">@ ${formatCurrency(
-                  product.price
-                )}</span>
-                <span class="fw-semibold text-rose-light-500">${formatCurrency(
-                  product.quantity * product.price
-                )}</span>
-              </div>
-            </div>
-            <button
-              class="btn-icon btn-icon--cart rounded-circle d-flex justify-content-center align-items-center"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path fill="#CAAFA7" d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z"/></svg>
-            </button>
-          </li>
-    `;
+      <li class="d-flex align-items-center justify-content-between border-bottom py-2">
+        <div class="d-flex flex-column gap-1">
+          <p class="fw-semibold m-0">${product.name}</p>
+          <div class="d-flex gap-2">
+            <span class="text-sunset-red fw-semibold">${
+              product.quantity
+            }x</span>
+            <span class="fw-light text-rose-light-500">@ ${formatCurrency(
+              product.price
+            )}</span>
+            <span class="fw-semibold text-rose-light-500">${formatCurrency(
+              product.quantity * product.price
+            )}</span>
+          </div>
+        </div>
+        <button onclick='removeItemFromCart(${
+          product.id
+        })' class="btn-icon btn-icon--cart rounded-circle d-flex justify-content-center align-items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10">
+            <path fill="#CAAFA7" d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z" />
+          </svg>
+        </button>
+      </li>`;
   });
 
   cartItemsList.innerHTML = cartItems.join("");
+}
+
+function removeItemFromCart(itemId) {
+  productsCart = productsCart.filter((p) => p.id !== itemId);
+  renderCartContent();
+  document.getElementById("cart-items-count").textContent = productsCart.reduce(
+    (acc, curr) => acc + curr.quantity,
+    0
+  );
+
+  // Restaurar el botón "Add to Cart" y remover el contador del producto
+  const { addToCartButton, addToCartButtonContainer, cartItemCountUpdater } =
+    buttonReferences.get(itemId);
+  addToCartButtonContainer.prepend(addToCartButton);
+  cartItemCountUpdater.remove();
 }
 
 function formatCurrency(currency) {
@@ -257,19 +258,25 @@ function addEventListenersToAddToCartButtons() {
 }
 
 function handleAddToCart(e) {
-  const addToCartButton = e.target;
-  const productListItemId = parseInt(
-    addToCartButton.closest("li").getAttribute("id")
-  );
+  const addToCartButton = e.target.closest(".btn-add-to-cart");
+  const productListItem = addToCartButton.closest("li");
+  const productId = parseInt(productListItem.getAttribute("id").split("-")[1]);
   const addToCartButtonContainer = addToCartButton.parentElement;
 
-  updateCart(productListItemId);
+  updateCart(productId);
 
   const cartItemCountUpdater = createCartItemCountUpdater(
-    productListItemId,
+    productId,
     addToCartButton,
     addToCartButtonContainer
   );
+
+  // Guardar referencias en el mapa
+  buttonReferences.set(productId, {
+    addToCartButton,
+    addToCartButtonContainer,
+    cartItemCountUpdater,
+  });
 
   addToCartButton.remove();
   addToCartButtonContainer.prepend(cartItemCountUpdater);
