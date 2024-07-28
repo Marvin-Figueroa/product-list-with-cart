@@ -63,3 +63,8 @@
 .product-image-bordered {
   outline-color: var(--sunset-red);
 }
+
+.modal__product-image {
+  width: 4rem;
+  border-radius: 8px;
+}
